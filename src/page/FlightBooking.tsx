@@ -1,58 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Plane, MessageCircle, Send } from "lucide-react";
-
-// Flight data type
-type Flight = {
-  id: number;
-  departure: string;
-  destination: string;
-  departureTime: string;
-  arrivalTime: string;
-  duration: string;
-  price: number;
-};
-
-// Sample flight data
-const sampleFlights: Flight[] = [
-  {
-    id: 1,
-    departure: "New York",
-    destination: "Los Angeles",
-    departureTime: "08:00 AM",
-    arrivalTime: "11:30 AM",
-    duration: "5h 30m",
-    price: 350,
-  },
-  {
-    id: 2,
-    departure: "Chicago",
-    destination: "San Francisco",
-    departureTime: "10:15 AM",
-    arrivalTime: "01:45 PM",
-    duration: "4h 30m",
-    price: 275,
-  },
-  {
-    id: 3,
-    departure: "Boston",
-    destination: "Miami",
-    departureTime: "07:45 AM",
-    arrivalTime: "11:00 AM",
-    duration: "3h 15m",
-    price: 220,
-  },
-];
+import { flightService, Flight } from "../services/flightService";
 
 const FlightBooking: React.FC = () => {
   const [isAIHelperOpen, setIsAIHelperOpen] = useState(false);
   const [aiPrompt, setAIPrompt] = useState("");
+  const [flights, setFlights] = useState<Flight[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFlights = async () => {
+      try {
+        setIsLoading(true);
+        const data = await flightService.getFlights();
+        setFlights(data);
+      } catch (err) {
+        setError("Failed to fetch flights. Please try again later.");
+        console.error("Error fetching flights:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFlights();
+  }, []);
 
   const handleAIHelperToggle = () => {
     setIsAIHelperOpen(!isAIHelperOpen);
   };
 
   const handleAIPromptSubmit = () => {
-    // Placeholder for AI query submission
     console.log("Submitted AI Prompt:", aiPrompt);
     setAIPrompt("");
   };
@@ -96,30 +74,36 @@ const FlightBooking: React.FC = () => {
 
       {/* Flight List */}
       <div className="grid gap-4">
-        {sampleFlights.map((flight) => (
-          <div
-            key={flight.id}
-            className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center"
-          >
-            <div>
-              <div className="font-bold text-lg">
-                {flight.departure} → {flight.destination}
+        {isLoading ? (
+          <div className="text-center py-8">Loading flights...</div>
+        ) : error ? (
+          <div className="text-center py-8 text-red-500">{error}</div>
+        ) : (
+          flights.map((flight) => (
+            <div
+              key={flight.id}
+              className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center"
+            >
+              <div>
+                <div className="font-bold text-lg">
+                  {flight.departure} → {flight.destination}
+                </div>
+                <div className="text-gray-600">
+                  {flight.departureTime} - {flight.arrivalTime}
+                </div>
+                <div className="text-sm text-gray-500">
+                  Duration: {flight.duration}
+                </div>
               </div>
-              <div className="text-gray-600">
-                {flight.departureTime} - {flight.arrivalTime}
-              </div>
-              <div className="text-sm text-gray-500">
-                Duration: {flight.duration}
+              <div className="text-right">
+                <div className="font-bold text-blue-600">${flight.price}</div>
+                <button className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                  Book Now
+                </button>
               </div>
             </div>
-            <div className="text-right">
-              <div className="font-bold text-blue-600">${flight.price}</div>
-              <button className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                Book Now
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* AI Helper Sidebar */}
@@ -136,7 +120,6 @@ const FlightBooking: React.FC = () => {
           </div>
 
           <div className="flex-grow overflow-y-auto mb-4 h-[calc(100%-150px)]">
-            {/* Placeholder for chat history */}
             <div className="text-center text-gray-500 mt-10">
               Ask me about finding flights!
             </div>
@@ -150,12 +133,12 @@ const FlightBooking: React.FC = () => {
               placeholder="Find me a flight to..."
               className="flex-grow p-2 border rounded-l"
             />
-            {/* <button
-              onClick={handleAIHelperSubmit}
+            <button
+              onClick={handleAIPromptSubmit}
               className="bg-blue-500 text-white px-4 rounded-r hover:bg-blue-600"
             >
               <Send />
-            </button> */}
+            </button>
           </div>
         </div>
       )}
