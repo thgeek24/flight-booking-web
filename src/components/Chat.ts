@@ -1,5 +1,5 @@
 import { createXai } from "@ai-sdk/xai";
-import { generateText } from "ai";
+import { streamText } from "ai";
 import dotenv from "dotenv";
 
 // Load environment variables from .env file
@@ -12,14 +12,18 @@ const xai = createXai({
 const model = xai("grok-2-latest");
 
 export const answerMyQuestion = async (prompt: string) => {
-  const { text } = await generateText({
+  const { textStream } = await streamText({
     model,
     prompt,
   });
 
-  return text;
+  for await (const text of textStream) {
+    process.stdout.write(text);
+  }
+
+  return textStream;
 };
 
-const answer = await answerMyQuestion("What is the color of Sun?");
+const answer = await answerMyQuestion("What is the color of the Sun?");
 
 console.log(answer);
