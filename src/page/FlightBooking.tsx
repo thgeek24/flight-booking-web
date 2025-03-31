@@ -5,6 +5,7 @@ import {
   Flight,
   formatDateTime,
 } from "../services/flightService";
+import AIFlightHelper from "../components/AIFlightHelper";
 
 const FlightBooking: React.FC = () => {
   const [isAIHelperOpen, setIsAIHelperOpen] = useState(false);
@@ -154,41 +155,13 @@ const FlightBooking: React.FC = () => {
       </div>
 
       {/* AI Helper Sidebar */}
-      {isAIHelperOpen && (
-        <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-xl p-6 z-50 animate-slide-in">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">AI Flight Assistant</h2>
-            <button
-              onClick={handleAIHelperToggle}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="flex-grow overflow-y-auto mb-4 h-[calc(100%-150px)]">
-            <div className="text-center text-gray-500 mt-10">
-              Ask me about finding flights!
-            </div>
-          </div>
-
-          <div className="flex">
-            <input
-              type="text"
-              value={aiPrompt}
-              onChange={(e) => setAIPrompt(e.target.value)}
-              placeholder="Find me a flight to..."
-              className="flex-grow p-2 border rounded-l"
-            />
-            <button
-              onClick={handleAIPromptSubmit}
-              className="bg-blue-500 text-white px-4 rounded-r hover:bg-blue-600"
-            >
-              <Send />
-            </button>
-          </div>
-        </div>
-      )}
+      <AIFlightHelper
+        isOpen={isAIHelperOpen}
+        onClose={handleAIHelperToggle}
+        aiPrompt={aiPrompt}
+        onPromptChange={setAIPrompt}
+        onSubmit={handleAIPromptSubmit}
+      />
     </div>
   );
 };
