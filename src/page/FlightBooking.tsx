@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Search, Plane, MessageCircle, Send } from "lucide-react";
-import { flightService, Flight } from "../services/flightService";
+import {
+  flightService,
+  Flight,
+  formatDateTime,
+} from "../services/flightService";
 
 const FlightBooking: React.FC = () => {
   const [isAIHelperOpen, setIsAIHelperOpen] = useState(false);
@@ -89,7 +93,8 @@ const FlightBooking: React.FC = () => {
                   {flight.departure} → {flight.destination}
                 </div>
                 <div className="text-gray-600">
-                  {flight.departureTime} - {flight.arrivalTime}
+                  {formatDateTime(flight.departureTime)} -{" "}
+                  {formatDateTime(flight.arrivalTime)}
                 </div>
                 <div className="text-sm text-gray-500">
                   Duration: {flight.duration}
