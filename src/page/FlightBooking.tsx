@@ -6,6 +6,7 @@ import {
   formatDateTime,
 } from "../services/flightService";
 import AIFlightHelper from "../components/AIFlightHelper";
+import AIAssistant from "../components/AIAssistant";
 
 const FlightBooking: React.FC = () => {
   const [isAIHelperOpen, setIsAIHelperOpen] = useState(false);
@@ -140,8 +141,8 @@ const FlightBooking: React.FC = () => {
                   {bookingFlightId === flight.id
                     ? "Booking..."
                     : flight.availableSeats > 0
-                    ? "Book Now"
-                    : "Sold Out"}
+                      ? "Book Now"
+                      : "Sold Out"}
                 </button>
                 {bookingError && bookingFlightId === flight.id && (
                   <div className="text-sm text-red-500 mt-2">
@@ -155,13 +156,14 @@ const FlightBooking: React.FC = () => {
       </div>
 
       {/* AI Helper Sidebar */}
-      <AIFlightHelper
+      {/* <AIFlightHelper
         isOpen={isAIHelperOpen}
         onClose={handleAIHelperToggle}
         aiPrompt={aiPrompt}
         onPromptChange={setAIPrompt}
         onSubmit={handleAIPromptSubmit}
-      />
+      /> */}
+      <AIAssistant />
     </div>
   );
 };
