@@ -99,11 +99,21 @@ const FlightBooking: React.FC = () => {
                 <div className="text-sm text-gray-500">
                   Duration: {flight.duration}
                 </div>
+                <div className="text-sm text-gray-500">
+                  Available Seats: {flight.availableSeats}
+                </div>
               </div>
               <div className="text-right">
                 <div className="font-bold text-blue-600">${flight.price}</div>
-                <button className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                  Book Now
+                <button
+                  className={`mt-2 px-4 py-2 rounded text-white ${
+                    flight.availableSeats > 0
+                      ? "bg-green-500 hover:bg-green-600"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  disabled={flight.availableSeats === 0}
+                >
+                  {flight.availableSeats > 0 ? "Book Now" : "Sold Out"}
                 </button>
               </div>
             </div>

@@ -8,6 +8,7 @@ export type Flight = {
   arrivalTime: string;
   duration: string;
   price: number;
+  availableSeats: number;
 };
 
 const API_BASE_URL = "http://localhost:8080";
