@@ -12,6 +12,8 @@ const FlightBooking: React.FC = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [bookingFlightId, setBookingFlightId] = useState<number | null>(null);
+  const [bookingError, setBookingError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -37,6 +39,24 @@ const FlightBooking: React.FC = () => {
   const handleAIPromptSubmit = () => {
     console.log("Submitted AI Prompt:", aiPrompt);
     setAIPrompt("");
+  };
+
+  const handleBookFlight = async (flightId: number) => {
+    try {
+      setBookingFlightId(flightId);
+      setBookingError(null);
+      await flightService.bookFlight(flightId);
+
+      // Refresh flights to update available seats
+      const updatedFlights = await flightService.getFlights();
+      setFlights(updatedFlights);
+    } catch (err) {
+      setBookingError(
+        err instanceof Error ? err.message : "Failed to book flight"
+      );
+    } finally {
+      setBookingFlightId(null);
+    }
   };
 
   return (
@@ -111,10 +131,21 @@ const FlightBooking: React.FC = () => {
                       ? "bg-green-500 hover:bg-green-600"
                       : "bg-gray-400 cursor-not-allowed"
                   }`}
-                  disabled={flight.availableSeats === 0}
+                  disabled={
+                    flight.availableSeats === 0 || bookingFlightId === flight.id
+                  }
                 >
-                  {flight.availableSeats > 0 ? "Book Now" : "Sold Out"}
+                  {bookingFlightId === flight.id
+                    ? "Booking..."
+                    : flight.availableSeats > 0
+                    ? "Book Now"
+                    : "Sold Out"}
                 </button>
+                {bookingError && bookingFlightId === flight.id && (
+                  <div className="text-sm text-red-500 mt-2">
+                    {bookingError}
+                  </div>
+                )}
               </div>
             </div>
           ))

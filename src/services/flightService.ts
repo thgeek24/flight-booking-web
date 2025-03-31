@@ -11,6 +11,11 @@ export type Flight = {
   availableSeats: number;
 };
 
+export type BookingResponse = {
+  success: boolean;
+  message: string;
+};
+
 const API_BASE_URL = "http://localhost:8080";
 
 export const formatDateTime = (isoString: string): string => {
@@ -47,5 +52,21 @@ export const flightService = {
       ...flight,
       duration: calculateDuration(flight.departureTime, flight.arrivalTime),
     }));
+  },
+
+  bookFlight: async (flightId: number): Promise<BookingResponse> => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/bookings`, {
+        flightId,
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(
+          error.response?.data?.message || "Failed to book flight"
+        );
+      }
+      throw error;
+    }
   },
 };
