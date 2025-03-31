@@ -30,7 +30,7 @@ A modern React application for booking flights with a clean, user-friendly inter
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/thgeek24/flight-booking-web.git
 cd flight-booking-demo
 ```
 
