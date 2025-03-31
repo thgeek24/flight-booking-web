@@ -104,7 +104,7 @@ export default function AIAssistant() {
       });
     },
     onToolCall: (call) => {
-      if (call.toolCall.toolName === "recommendGuitar") {
+      if (call.toolCall.toolName === "recommendFlight") {
         return "Handled by the UI";
       }
     },

@@ -6,7 +6,7 @@ import { flightList, showAIAssistant } from "../store/assistant";
 export default function FlightRecommendation({ id }: { id: string }) {
   const flights = useStore(flightList);
 
-  const flight = flights.find((flight) => flight.id === +id);
+  const flight = flights.find((flight) => flight.id === id);
   if (!flight) {
     return null;
   }

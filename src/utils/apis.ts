@@ -1,5 +1,5 @@
 export type Flight = {
-  id: number;
+  id: string;
   departure: string;
   destination: string;
   departureTime: string;

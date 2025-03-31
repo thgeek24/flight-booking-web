@@ -19,8 +19,9 @@ const MODEL = xai("grok-2-latest");
 
 const SYSTEM_PROMPT = `You are an AI for a flight booking website.
 
-There are flights available for booking. You can recommend a flight to the user.
-You can get a list of flights by using the getFlights tool.`;
+There are flights available for booking. 
+You can get a list of flights by using the getFlights tool.
+You can recommend a flight to the user by using recommendFlight tool.`;
 
 export const genAIResponse = createServerFn({ method: "POST", response: "raw" })
   .validator(
