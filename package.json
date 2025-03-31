@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ai-sdk/xai": "^1.2.4",
     "@tailwindcss/vite": "^4.0.17",
+    "ai": "^4.2.9",
     "axios": "^1.8.4",
     "lucide-react": "^0.484.0",
     "react": "^19.0.0",
