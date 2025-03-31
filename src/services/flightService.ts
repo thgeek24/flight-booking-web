@@ -23,9 +23,28 @@ export const formatDateTime = (isoString: string): string => {
   });
 };
 
+export const calculateDuration = (
+  departureTime: string,
+  arrivalTime: string
+): string => {
+  const departure = new Date(departureTime);
+  const arrival = new Date(arrivalTime);
+
+  const diffInMinutes = Math.round(
+    (arrival.getTime() - departure.getTime()) / (1000 * 60)
+  );
+  const hours = Math.floor(diffInMinutes / 60);
+  const minutes = diffInMinutes % 60;
+
+  return `${hours} hr ${minutes} min`;
+};
+
 export const flightService = {
   getFlights: async (): Promise<Flight[]> => {
     const response = await axios.get(`${API_BASE_URL}/flights`);
-    return response.data;
+    return response.data.map((flight: Omit<Flight, "duration">) => ({
+      ...flight,
+      duration: calculateDuration(flight.departureTime, flight.arrivalTime),
+    }));
   },
 };
