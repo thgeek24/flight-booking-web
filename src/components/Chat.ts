@@ -12,7 +12,7 @@ const xai = createXai({
 const model = xai("grok-2-latest");
 
 export const answerMyQuestion = async (prompt: string) => {
-  const { textStream } = await streamText({
+  const { textStream } = streamText({
     model,
     prompt,
   });
