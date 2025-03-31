@@ -134,6 +134,7 @@ const FlightBooking: React.FC = () => {
                   disabled={
                     flight.availableSeats === 0 || bookingFlightId === flight.id
                   }
+                  onClick={() => handleBookFlight(flight.id)}
                 >
                   {bookingFlightId === flight.id
                     ? "Booking..."
