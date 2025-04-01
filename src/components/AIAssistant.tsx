@@ -28,7 +28,7 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
 
   if (!messages.length) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+      <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
         Ask me about flights! I'm here to help.
       </div>
     );
@@ -40,15 +40,13 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
         <div
           key={id}
           className={`py-3 ${
-            role === "assistant"
-              ? "bg-gradient-to-r from-orange-500/5 to-red-600/5"
-              : "bg-transparent"
+            role === "assistant" ? "bg-blue-50" : "bg-transparent"
           }`}
         >
           {content.length > 0 && (
             <div className="flex items-start gap-2 px-4">
               {role === "assistant" ? (
-                <div className="w-6 h-6 rounded-lg bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
+                <div className="w-6 h-6 rounded-lg bg-blue-500 flex items-center justify-center text-xs font-medium text-white flex-shrink-0">
                   AI
                 </div>
               ) : (
@@ -57,7 +55,7 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <div className="prose dark:prose-invert max-w-none prose-sm">
+                <div className="prose max-w-none prose-sm">
                   <ReactMarkdown
                     rehypePlugins={[
                       rehypeRaw,
@@ -123,12 +121,12 @@ export default function AIAssistant() {
       </button>
 
       {isOpen && (
-        <div className="fixed top-0 right-0 w-[700px] h-screen bg-gray-900 shadow-xl border-l border-orange-500/20 flex flex-col animate-slide-in">
-          <div className="flex items-center justify-between p-3 border-b border-orange-500/20">
-            <h3 className="font-semibold text-white">AI Assistant</h3>
+        <div className="fixed top-0 right-0 w-[700px] h-screen bg-white shadow-xl border-l border-gray-200 flex flex-col animate-slide-in">
+          <div className="flex items-center justify-between p-3 border-b border-gray-200">
+            <h3 className="font-semibold text-gray-900">AI Assistant</h3>
             <button
               onClick={() => showAIAssistant.setState((state) => !state)}
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-500 hover:text-gray-700 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -136,14 +134,14 @@ export default function AIAssistant() {
 
           <Messages messages={messages} />
 
-          <div className="p-3 border-t border-orange-500/20">
+          <div className="p-3 border-t border-gray-200">
             <form onSubmit={handleSubmit}>
               <div className="relative">
                 <textarea
                   value={input}
                   onChange={handleInputChange}
                   placeholder="Type your message..."
-                  className="w-full rounded-lg border border-orange-500/20 bg-gray-800/50 pl-3 pr-10 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent resize-none overflow-hidden"
+                  className="w-full rounded-lg border border-gray-200 bg-white pl-3 pr-10 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none overflow-hidden"
                   rows={1}
                   style={{ minHeight: "36px", maxHeight: "120px" }}
                   onInput={(e) => {
@@ -162,7 +160,7 @@ export default function AIAssistant() {
                 <button
                   type="submit"
                   disabled={!input.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-orange-500 hover:text-orange-400 disabled:text-gray-500 transition-colors focus:outline-none"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-blue-500 hover:text-blue-600 disabled:text-gray-400 transition-colors focus:outline-none"
                 >
                   <Send className="w-4 h-4" />
                 </button>
