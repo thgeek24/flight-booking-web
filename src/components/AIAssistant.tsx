@@ -112,9 +112,9 @@ export default function AIAssistant() {
     <div className="relative z-50">
       <button
         onClick={() => showAIAssistant.setState((state) => !state)}
-        className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-orange-500 to-red-600 text-white hover:opacity-90 transition-opacity"
+        className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500 to-red-600 text-white hover:opacity-90 transition-opacity"
       >
-        <div className="w-5 h-5 rounded-lg bg-white/20 flex items-center justify-center text-xs font-medium">
+        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-medium">
           AI
         </div>
         AI Assistant

@@ -5,7 +5,6 @@ import {
   Flight,
   formatDateTime,
 } from "../services/flightService";
-import AIFlightHelper from "../components/AIFlightHelper";
 import AIAssistant from "../components/AIAssistant";
 
 const FlightBooking: React.FC = () => {
@@ -159,13 +158,13 @@ const FlightBooking: React.FC = () => {
       </div>
 
       {/* AI Helper Sidebar */}
-      <AIFlightHelper
+      {/* <AIFlightHelper
         isOpen={isAIHelperOpen}
         onClose={handleAIHelperToggle}
         aiPrompt={aiPrompt}
         onPromptChange={setAIPrompt}
         onSubmit={handleAIPromptSubmit}
-      />
+      /> */}
     </div>
   );
 };
