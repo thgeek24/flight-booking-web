@@ -20,12 +20,13 @@ const API_BASE_URL = "http://localhost:8080";
 
 export const formatDateTime = (isoString: string): string => {
   const date = new Date(isoString);
-  return date.toLocaleString("en-US", {
+  return date.toLocaleString("en-CN", {
     month: "short",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    timeZone: "UTC",
   });
 };
 
