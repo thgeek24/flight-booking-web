@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { fetchFlights } from "./apis";
+import { bookFlightSeat, fetchFlights } from "./apis";
 
 const getFlights = tool({
   description: "Get all flights from the database",
@@ -15,9 +15,18 @@ const recommendFlight = tool({
   }),
 });
 
+const bookSeat = tool({
+  description: "Use this tool to book a flight seat for the user",
+  parameters: z.object({
+    flightId: z.string().describe("The id of the flight to book"),
+  }),
+  execute: async ({ flightId }) => await bookFlightSeat(flightId),
+});
+
 export default async function getTools() {
   return {
     getFlights,
     recommendFlight,
+    bookSeat,
   };
 }

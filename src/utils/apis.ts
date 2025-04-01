@@ -16,3 +16,21 @@ export const fetchFlights = async () => {
   }
   return response.json() as unknown as Flight[];
 };
+
+export const bookFlightSeat = async (flightId: string) => {
+  const response = await fetch("http://localhost:8080/bookings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      flightId: flightId,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to book seat");
+  }
+
+  return response.json();
+};

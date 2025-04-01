@@ -21,7 +21,10 @@ const SYSTEM_PROMPT = `You are an AI for a flight booking website.
 
 There are flights available for booking. 
 You can get a list of flights by using the getFlights tool.
-You can recommend a flight to the user by using recommendFlight tool.`;
+You can recommend a flight to the user by using recommendFlight tool.
+
+Before asking the user whether to book a seat, you should firstly tell the user its flight id, departure, desitantion, departure time, arrival time, etc.
+You can book a flight seat for the user by using bookSeat tool`;
 
 export const genAIResponse = createServerFn({ method: "POST", response: "raw" })
   .validator(
