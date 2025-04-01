@@ -29,7 +29,7 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
   if (!messages.length) {
     return (
       <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
-        Ask me anything! I'm here to help.
+        Ask me about flights! I'm here to help.
       </div>
     );
   }

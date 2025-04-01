@@ -69,13 +69,16 @@ const FlightBooking: React.FC = () => {
           <Plane className="mr-2" /> Flight Booking
         </h1>
 
-        {/* AI Helper Toggle Button */}
-        <button
-          onClick={handleAIHelperToggle}
-          className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-        >
-          <MessageCircle />
-        </button>
+        {/* AI Buttons */}
+        <div className="flex items-center gap-2">
+          <AIAssistant />
+          <button
+            onClick={handleAIHelperToggle}
+            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+          >
+            <MessageCircle />
+          </button>
+        </div>
       </div>
 
       {/* Flight Search */}
@@ -156,14 +159,13 @@ const FlightBooking: React.FC = () => {
       </div>
 
       {/* AI Helper Sidebar */}
-      {/* <AIFlightHelper
+      <AIFlightHelper
         isOpen={isAIHelperOpen}
         onClose={handleAIHelperToggle}
         aiPrompt={aiPrompt}
         onPromptChange={setAIPrompt}
         onSubmit={handleAIPromptSubmit}
-      /> */}
-      <AIAssistant />
+      />
     </div>
   );
 };
