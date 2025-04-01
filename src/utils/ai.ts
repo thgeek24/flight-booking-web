@@ -11,8 +11,7 @@ export interface Message {
 }
 
 const xai = createXai({
-  apiKey:
-    "xai-HYyC4MM0RvotaX5avsvGYnj1Qv4ooWJaNcarOCdgGEHV3geeuhuosnSHfDT2h0MC45qA0vMoew0VVSaD",
+  apiKey: import.meta.env.VITE_XAI_API_KEY,
 });
 
 const MODEL = xai("grok-2-latest");
@@ -55,7 +54,7 @@ export const genAIResponse = createServerFn({ method: "POST", response: "raw" })
         maxSteps: 20,
         tools,
       });
-
+      console.log(MODEL);
       return result.toDataStreamResponse();
     } catch (error) {
       console.error("Error in genAIResponse:", error);
