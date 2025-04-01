@@ -121,7 +121,7 @@ export default function AIAssistant() {
       </button>
 
       {isOpen && (
-        <div className="fixed top-0 right-0 w-[700px] h-screen bg-white shadow-xl border-l border-gray-200 flex flex-col animate-slide-in">
+        <div className="fixed top-0 right-0 w-[600px] h-screen bg-white shadow-xl border-l border-gray-200 flex flex-col animate-slide-in">
           <div className="flex items-center justify-between p-3 border-b border-gray-200">
             <h3 className="font-semibold text-gray-900">AI Assistant</h3>
             <button
