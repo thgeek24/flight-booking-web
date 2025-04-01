@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Plane, MessageCircle, Send } from "lucide-react";
+import { Search, Plane } from "lucide-react";
 import {
   flightService,
   Flight,
@@ -8,8 +8,6 @@ import {
 import AIAssistant from "../components/AIAssistant";
 
 const FlightBooking: React.FC = () => {
-  const [isAIHelperOpen, setIsAIHelperOpen] = useState(false);
-  const [aiPrompt, setAIPrompt] = useState("");
   const [flights, setFlights] = useState<Flight[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,15 +30,6 @@ const FlightBooking: React.FC = () => {
 
     fetchFlights();
   }, []);
-
-  const handleAIHelperToggle = () => {
-    setIsAIHelperOpen(!isAIHelperOpen);
-  };
-
-  const handleAIPromptSubmit = () => {
-    console.log("Submitted AI Prompt:", aiPrompt);
-    setAIPrompt("");
-  };
 
   const handleBookFlight = async (flightId: number) => {
     try {
@@ -68,16 +57,8 @@ const FlightBooking: React.FC = () => {
           <Plane className="mr-2" /> Flight Booking
         </h1>
 
-        {/* AI Buttons */}
-        <div className="flex items-center gap-2">
-          <AIAssistant />
-          <button
-            onClick={handleAIHelperToggle}
-            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-          >
-            <MessageCircle />
-          </button>
-        </div>
+        {/* AI Assistant */}
+        <AIAssistant />
       </div>
 
       {/* Flight Search */}
@@ -156,15 +137,6 @@ const FlightBooking: React.FC = () => {
           ))
         )}
       </div>
-
-      {/* AI Helper Sidebar */}
-      {/* <AIFlightHelper
-        isOpen={isAIHelperOpen}
-        onClose={handleAIHelperToggle}
-        aiPrompt={aiPrompt}
-        onPromptChange={setAIPrompt}
-        onSubmit={handleAIPromptSubmit}
-      /> */}
     </div>
   );
 };
