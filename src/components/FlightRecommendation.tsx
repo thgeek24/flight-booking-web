@@ -1,7 +1,7 @@
 import React from "react";
 import { useStore } from "@tanstack/react-store";
 
-import { flightList, showAIAssistant } from "../store/assistant";
+import { flightList } from "../store/assistant";
 
 export default function FlightRecommendation({ id }: { id: string }) {
   const flights = useStore(flightList);
