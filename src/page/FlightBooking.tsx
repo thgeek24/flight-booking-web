@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Search, Plane, MessageCircle, Send } from "lucide-react";
+import { Search, Plane } from "lucide-react";
 import {
   flightService,
   Flight,
   formatDateTime,
 } from "../services/flightService";
+import AIAssistant from "../components/AIAssistant";
 
 const FlightBooking: React.FC = () => {
-  const [isAIHelperOpen, setIsAIHelperOpen] = useState(false);
-  const [aiPrompt, setAIPrompt] = useState("");
   const [flights, setFlights] = useState<Flight[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [bookingFlightId, setBookingFlightId] = useState<number | null>(null);
+  const [bookingError, setBookingError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -30,13 +31,22 @@ const FlightBooking: React.FC = () => {
     fetchFlights();
   }, []);
 
-  const handleAIHelperToggle = () => {
-    setIsAIHelperOpen(!isAIHelperOpen);
-  };
+  const handleBookFlight = async (flightId: number) => {
+    try {
+      setBookingFlightId(flightId);
+      setBookingError(null);
+      await flightService.bookFlight(flightId);
 
-  const handleAIPromptSubmit = () => {
-    console.log("Submitted AI Prompt:", aiPrompt);
-    setAIPrompt("");
+      // Refresh flights to update available seats
+      const updatedFlights = await flightService.getFlights();
+      setFlights(updatedFlights);
+    } catch (err) {
+      setBookingError(
+        err instanceof Error ? err.message : "Failed to book flight"
+      );
+    } finally {
+      setBookingFlightId(null);
+    }
   };
 
   return (
@@ -47,13 +57,8 @@ const FlightBooking: React.FC = () => {
           <Plane className="mr-2" /> Flight Booking
         </h1>
 
-        {/* AI Helper Toggle Button */}
-        <button
-          onClick={handleAIHelperToggle}
-          className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-        >
-          <MessageCircle />
-        </button>
+        {/* AI Assistant */}
+        <AIAssistant />
       </div>
 
       {/* Flight Search */}
@@ -99,54 +104,39 @@ const FlightBooking: React.FC = () => {
                 <div className="text-sm text-gray-500">
                   Duration: {flight.duration}
                 </div>
+                <div className="text-sm text-gray-500">
+                  Available Seats: {flight.availableSeats}
+                </div>
               </div>
               <div className="text-right">
                 <div className="font-bold text-blue-600">${flight.price}</div>
-                <button className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                  Book Now
+                <button
+                  className={`mt-2 px-4 py-2 rounded text-white transition-all duration-200 ${
+                    flight.availableSeats > 0
+                      ? "bg-green-500 hover:bg-green-600 hover:shadow-md cursor-pointer"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  disabled={
+                    flight.availableSeats === 0 || bookingFlightId === flight.id
+                  }
+                  onClick={() => handleBookFlight(flight.id)}
+                >
+                  {bookingFlightId === flight.id
+                    ? "Booking..."
+                    : flight.availableSeats > 0
+                      ? "Book Now"
+                      : "Sold Out"}
                 </button>
+                {bookingError && bookingFlightId === flight.id && (
+                  <div className="text-sm text-red-500 mt-2">
+                    {bookingError}
+                  </div>
+                )}
               </div>
             </div>
           ))
         )}
       </div>
-
-      {/* AI Helper Sidebar */}
-      {isAIHelperOpen && (
-        <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-xl p-6 z-50 animate-slide-in">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">AI Flight Assistant</h2>
-            <button
-              onClick={handleAIHelperToggle}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="flex-grow overflow-y-auto mb-4 h-[calc(100%-150px)]">
-            <div className="text-center text-gray-500 mt-10">
-              Ask me about finding flights!
-            </div>
-          </div>
-
-          <div className="flex">
-            <input
-              type="text"
-              value={aiPrompt}
-              onChange={(e) => setAIPrompt(e.target.value)}
-              placeholder="Find me a flight to..."
-              className="flex-grow p-2 border rounded-l"
-            />
-            <button
-              onClick={handleAIPromptSubmit}
-              className="bg-blue-500 text-white px-4 rounded-r hover:bg-blue-600"
-            >
-              <Send />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
