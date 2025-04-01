@@ -10,6 +10,7 @@ export interface Message {
   content: string;
 }
 
+// Add api key for grok in .env file in the root directory
 const xai = createXai({
   apiKey: import.meta.env.VITE_XAI_API_KEY,
 });
